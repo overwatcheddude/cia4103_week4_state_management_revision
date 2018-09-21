@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 public partial class checkout : System.Web.UI.Page
 {
+    //Uses smoothiename to get the smoothie image, and displays the quantity in the 2nd table data.
     private String smoothieRow(string smoothieName, int smoothieQuantitiy)
     {
         if (smoothieQuantitiy != 0)
@@ -25,6 +26,7 @@ public partial class checkout : System.Web.UI.Page
         }
     }
 
+    //Returns smoothie quantity. If the cookie value is null, then it returns 0. Helps to prevent crashes.
     private int smoothieQuantity(String cookieValue)
     {
         if (cookieValue != null)
@@ -39,17 +41,25 @@ public partial class checkout : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        //If cookie does not exist, then redirect the user back to the homepage.
         if (Request.Cookies["drinkCookie"] == null)
         {
             Response.Redirect("Default.aspx");
-            return;
         }
+
         //read the values from the cookie
         HttpCookie drinkCookie = Request.Cookies["drinkCookie"];
-        int smoothie1 = int.Parse(drinkCookie.Values["smoothie1"]);
-        int smoothie2 = int.Parse(drinkCookie.Values["smoothie2"]);
-        int smoothie3 = int.Parse(drinkCookie.Values["smoothie3"]);
+        int smoothie1 = smoothieQuantity(drinkCookie.Values["smoothie1"]);
+        int smoothie2 = smoothieQuantity(drinkCookie.Values["smoothie2"]);
+        int smoothie3 = smoothieQuantity(drinkCookie.Values["smoothie3"]);
 
+        //If the user has not purchase any smoothie, then redirect him back to the homepage.
+        if (smoothie1 == 0 && smoothie2 == 0 && smoothie3 == 0)
+        {
+            Response.Redirect("Default.aspx");
+        }
+
+        //Calculates the total price.
         double totalPrice = (smoothie1 + smoothie2 + smoothie3) * 18;
 
         //Creates a table.
