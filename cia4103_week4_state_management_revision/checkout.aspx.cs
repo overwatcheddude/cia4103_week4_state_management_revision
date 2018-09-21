@@ -7,6 +7,35 @@ using System.Web.UI.WebControls;
 
 public partial class checkout : System.Web.UI.Page
 {
+    private String smoothieRow(string smoothieName, int smoothieQuantitiy)
+    {
+        if (smoothieQuantitiy != 0)
+        {
+            String row = "<tr>" +
+                         "<td><img src=\"Smoothieimages/" + smoothieName +".jpg\" width=\"115\" height=\"140\"></td>" +
+                         "<td>" + smoothieQuantitiy.ToString() + "</td>" +
+                         "<td>18</td>" +
+                     "</tr>";
+
+            return row;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    private int smoothieQuantity(String cookieValue)
+    {
+        if (cookieValue != null)
+        {
+            return int.Parse(cookieValue);
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -31,30 +60,10 @@ public partial class checkout : System.Web.UI.Page
                             "<td><strong>Price</strong></td>" +
                         "</tr>";
 
-        if (smoothie1 != 0)
-        {
-            table += "<tr>" +
-                         "<td><img src=\"Smoothieimages/smoothie1.jpg\" width=\"115\" height=\"140\"></td>" +
-                         "<td>" + smoothie1 + "</td>" +
-                         "<td>18</td>" +
-                     "</tr>";
-        }
-        if (smoothie2 != 0)
-        {
-            table += "<tr>" +
-                         "<td><img src=\"Smoothieimages/smoothie2.jpg\" width=\"115\" height=\"140\"></td>" +
-                         "<td>" + smoothie2 + "</td>" +
-                         "<td>18</td>" +
-                     "</tr>";
-        }
-        if (smoothie3 != 0)
-        {
-            table += "<tr>" +
-                         "<td><img src=\"Smoothieimages/smoothie3.jpg\" width=\"115\" height=\"140\"></td>" +
-                         "<td>" + smoothie3 + "</td>" +
-                         "<td>18</td>" +
-                     "</tr>";
-        }
+        //Populates the table with smoothie rows if quantity is more than 0.
+        table += smoothieRow("smoothie1", smoothie1);
+        table += smoothieRow("smoothie2", smoothie2);
+        table += smoothieRow("smoothie3", smoothie3);
 
         table += "<tr>" +
             "<td>Total</td>" +
